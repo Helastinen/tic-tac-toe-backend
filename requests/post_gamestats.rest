@@ -1,0 +1,11 @@
+POST http://localhost:3001/api/gamestats
+Content-Type: application/json
+
+{
+  "playerOne": "Alice",
+  "playerTwo": "Bob",
+  "winnerName": "Bob",
+  "winningMark": "O",
+  "winningMove": 7,
+  "status": "completed"
+}
