@@ -7,19 +7,19 @@ const gameStats = {
       "winnerName": "Bob",
       "winningMark": "O",
       "winningMove": 5,
-      "status": "completed"
+      "status": "completed_with_winner"
     },
     {
       "id": 2,
       "playerOne": "Alice",
       "playerTwo": "Bob",
-      "status": "completed"
+      "status": "completed_with_tie"
     },
     {
       "id": 3,
       "playerOne": "Alice",
       "playerTwo": "Bob",
-      "status": "completed"
+      "status": "completed_with_tie"
     },
     {
       "id": 4,

@@ -24,20 +24,20 @@ const generateId = () => {
   const maxId = gameStats.gameHistory.length > 0
     ? Math.max(...gameStats.gameHistory.map(g => g.id))
     : 0;
-  console.log("maxId: ", maxId);
+  //console.log("maxId: ", maxId);
   return maxId + 1;
 };
 
 app.post("/api/gamehistory", (request, response) => {
   const gameResult = request.body;
-  console.log("request.body: ", gameResult);
+  //console.log("request.body: ", gameResult);
 
   if (!gameResult.status) {
     return response.status(400).json({ error: "status missing" });
   }
 
   gameResult.id = generateId();
-  console.log("gameResult with id: ", gameResult);
+  //console.log("gameResult with id: ", gameResult);
 
   gameStats.gameHistory = gameStats.gameHistory.concat(gameResult);
 
@@ -46,7 +46,7 @@ app.post("/api/gamehistory", (request, response) => {
 
 app.put("/api/totalstats", (request, response) => {
   const updatedTotalStats = request.body;
-  console.log("request.body: ", updatedTotalStats);
+  //console.log("request.body: ", updatedTotalStats);
 
   gameStats.totalStats = updatedTotalStats;
 
@@ -58,7 +58,7 @@ const unknownEndpoint = (request, response) => {
 };
 app.use(unknownEndpoint);
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
