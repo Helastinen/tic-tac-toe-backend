@@ -1,12 +1,10 @@
 const express = require("express");
 const morgan = require("morgan");
-const cors = require("cors");
 const gameStats = require ("./gameStats.js");
 
 const app = express();
 app.use(express.json());
 app.use(morgan("tiny"));
-app.use(cors());
 app.use(express.static("dist"));
 
 app.get("/", (request, response) => {
