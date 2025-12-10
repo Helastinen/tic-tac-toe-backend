@@ -1,0 +1,9 @@
+PUT http://localhost:3001/api/totalstats
+Content-Type: application/json
+
+{
+  "playerOneWins": 1,
+  "playerTwoWins": 0,
+  "ties": 2,
+  "aborted": 3
+}
