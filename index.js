@@ -1,50 +1,12 @@
+require("dotenv").config(); // import environment values from .env
 const express = require("express");
-const morgan = require("morgan");
-// const gameStats = require ("./gameStats.js");
-const mongoose = require("mongoose");
-
+const morgan = require("morgan"); // logging network traffic
 const app = express();
+const GameHistory = require("./models/gameHistory");
+
 app.use(express.json());
 app.use(morgan("tiny"));
-app.use(express.static("dist"));
-
-// MongoDB
-if (process.argv.length < 3) {
-  console.log("give password as argument");
-  process.exit(1);
-}
-
-const username = "hellstenantti_db_user";
-const password = process.argv[2];
-const dbName = "gamehistory";  
-const appName = "Cluster0";
-const url = `mongodb+srv://${username}:${password}@cluster0.xcbdbl1.mongodb.net/${dbName}?appName=${appName}`;
-
-mongoose.set("strictQuery", false);
-
-// connection uses IPv4
-mongoose.connect(url, { family: 4 });
-
-// GameHistory Mongo schema
-const gameHistorySchema = new mongoose.Schema({
-  id: {type: Number, required: true},
-  playerOne: {type: String, required: true},
-  playerTwo: {type: String, required: true},
-  winnerName: {type: String, required: false},
-  winningMark: {type: String, required: false},
-  winningMove: {type: Number, required: false},
-  status: {type: String, required: true},
-});
-
-gameHistorySchema.set("toJSON", {
-  transform: (document, returnedObject) => {
-    returnedObject.id = returnedObject._id.toString();
-    delete returnedObject._id;
-    delete returnedObject.__v;
-  }
-});
-
-const GameHistory = mongoose.model("GameHistory", gameHistorySchema);
+app.use(express.static("dist")); // serve static content from "dist" folder, that has FE
 
 // Routes
 app.get("/", (request, response) => {
@@ -161,7 +123,7 @@ const unknownEndpoint = (request, response) => {
 };
 app.use(unknownEndpoint);
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
