@@ -16,7 +16,7 @@ mongoose.connect(url, { family: 4 })
 
 // GameHistory schema
 const gameHistorySchema = new mongoose.Schema({
-  id: {type: Number, required: true},
+  // id: {type: Number, required: true},
   playerOne: {type: String, required: true},
   playerTwo: {type: String, required: true},
   winnerName: {type: String, required: false},
