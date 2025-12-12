@@ -7,7 +7,7 @@ if (process.argv.length < 3) {
 
 const username = "hellstenantti_db_user";
 const password = process.argv[2];
-const dbName = "gamestats";  
+const dbName = "gamehistory";  
 const appName = "Cluster0";
 const url = `mongodb+srv://${username}:${password}@cluster0.xcbdbl1.mongodb.net/${dbName}?appName=${appName}`;
 
@@ -26,7 +26,7 @@ const GameHistorySchema = new mongoose.Schema({
   status: {type: String, required: true},
 });
 
-const TotalStatsSchema = new mongoose.Schema({
+/*const TotalStatsSchema = new mongoose.Schema({
   playerOneWins: {type: Number, required: true},
   playerTwoWins: {type: Number, required: true},
   ties: {type: Number, required: true},
@@ -36,39 +36,31 @@ const TotalStatsSchema = new mongoose.Schema({
 const gameStatsSchema = new mongoose.Schema({
   gameHistory: [GameHistorySchema],
   totalStats: TotalStatsSchema,
-});
+});*/
 
-const GameStats = mongoose.model("Gamestats", gameStatsSchema);
+const GameHistory = mongoose.model("GameHistory", GameHistorySchema);
 
-const gameStat = new GameStats({
-  "gameHistory": [
-    {
-      "id": 1,
-      "playerOne": "Alice",
-      "playerTwo": "Bob",
-      "winnerName": "Bob",
-      "winningMark": "O",
-      "winningMove": 5,
-      "status": "completed_with_winner"
-    },
-  ],
-    "totalStats": {
-      "playerOneWins": 1,
-      "playerTwoWins": 0,
-      "ties": 0,
-      "aborted": 0
-    }
-});
+const gameHistory = new GameHistory(
+  {
+    "id": 1,
+    "playerOne": "Alice",
+    "playerTwo": "Bob",
+    "winnerName": "Bob",
+    "winningMark": "O",
+    "winningMove": 5,
+    "status": "completed_with_winner"
+  }
+);
 
-/* gameStat.save().then(result => {
-  console.log("gameStat saved!");
+ /*gameHistory.save().then(result => {
+  console.log("gameHistory saved!");
   console.log("result: ", result);
   mongoose.connection.close();
-});
-*/
+});*/
 
 
-GameStats.find({})
+
+GameHistory.find({})
   .then(result => {
     result.forEach(gameStat => console.log(gameStat));
     mongoose.connection.close();
