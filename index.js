@@ -61,11 +61,67 @@ app.get("/api/gamehistory", (request, response) => {
   // response.json(gameStats.gameHistory);
 });
 
-/* app.get("/api/totalstats", (request, response) => {
-  GameHistory.find({})
-    .then(gameStats => response.json(gameStats.totalStats));
-  // response.json(gameStats.totalStats);
-});*/
+app.get("/api/totalstats", async (request, response) => {
+  try {
+    const result = await GameHistory.aggregate([
+      {
+        $group: {
+          _id: null,
+          playerOneWins: {
+            $sum: {
+              $cond: [
+                { $eq: ["$winnerName", "$playerOne" ]},
+                1,
+                0
+              ]
+            }
+          },
+          playerTwoWins: {
+            $sum: {
+              $cond: [
+                { $eq: ["$winnerName", "$playerTwo"] },
+                1,
+                0
+              ]
+            }
+          },
+          ties: {
+            $sum: {
+              $cond: [
+                { $eq: ["$status", "completed_with_tie"] },
+                1,
+                0
+              ]
+            }
+          },
+          aborted: {
+            $sum: {
+              $cond: [
+                { $eq: ["$status", "aborted"] },
+                1,
+                0
+              ]
+            }
+          }
+        }
+      },
+      {
+        $project: {
+          _id: null,
+          playerOneWins: "$playerOneWins",
+          playerTwoWins: "$playerTwoWins",
+          ties: "$ties",
+          aborted: "$aborted"
+        }
+      }
+    ])
+    console.log("/api/totalstats aggregate: ", result[0]);
+    response.json(result[0] || { totalStats: {} });
+  } catch (error) {
+    console.error("totalStats aggregation error:", error);
+    response.status(500).json({ error: "Failed to compute totalStats" });
+  }
+});
 
 const generateId = () => {
   const maxId = gameStats.gameHistory.length > 0
@@ -77,7 +133,7 @@ const generateId = () => {
 
 app.post("/api/gamehistory", (request, response) => {
   const gameResult = request.body;
-  //console.log("request.body: ", gameResult);
+  console.log("request.body: ", gameResult);
 
   if (!gameResult.status) {
     return response.status(400).json({ error: "status missing" });
