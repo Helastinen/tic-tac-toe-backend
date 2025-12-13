@@ -3,6 +3,7 @@ const express = require("express");
 const morgan = require("morgan"); // logging network traffic
 const app = express();
 const GameHistory = require("./models/gameHistory");
+const { aggregateTotalStats } = require("./services/totalStats");
 
 app.use(express.json());
 app.use(morgan("tiny"));
@@ -23,66 +24,18 @@ app.get("/api/gamehistory", (request, response) => {
     })
 });
 
-app.get("/api/totalstats", async (request, response) => {
-  try {
-    const result = await GameHistory.aggregate([
-      {
-        $group: {
-          _id: null,
-          playerOneWins: {
-            $sum: {
-              $cond: [
-                { $eq: ["$winnerName", "$playerOne" ]},
-                1,
-                0
-              ]
-            }
-          },
-          playerTwoWins: {
-            $sum: {
-              $cond: [
-                { $eq: ["$winnerName", "$playerTwo"] },
-                1,
-                0
-              ]
-            }
-          },
-          ties: {
-            $sum: {
-              $cond: [
-                { $eq: ["$status", "completed_with_tie"] },
-                1,
-                0
-              ]
-            }
-          },
-          aborted: {
-            $sum: {
-              $cond: [
-                { $eq: ["$status", "aborted"] },
-                1,
-                0
-              ]
-            }
-          }
-        }
-      },
-      {
-        $project: {
-          _id: null,
-          playerOneWins: "$playerOneWins",
-          playerTwoWins: "$playerTwoWins",
-          ties: "$ties",
-          aborted: "$aborted"
-        }
-      }
-    ])
-    console.log("/api/totalstats aggregate: ", result[0]);
-    response.json(result[0] || { totalStats: {} });
-  } catch (error) {
-    console.error("totalStats aggregation error:", error);
-    response.status(500).json({ error: "Failed to compute totalStats" });
-  }
+app.get("/api/totalstats", (request, response) => {
+    const result = aggregateTotalStats();
+    
+    result
+      .then(totalStats => {
+        console.log("/api/totalstats aggregate: ", totalStats[0]);
+        response.json(totalStats[0] || { totalStats: {} });
+      })
+      .catch (error => {
+        console.error("totalStats aggregation error:", error);
+        response.status(500).json({ error: "Failed to compute totalStats" });
+    })
 });
 
 app.post("/api/gamehistory", (request, response) => {
