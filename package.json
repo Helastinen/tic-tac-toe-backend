@@ -9,7 +9,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "node --watch index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "NODE_ENV=test node --watch index.js",
     "build:ui": "rm -rf dist && cd ../tic-tac-toe && npm run build && cp -r dist ../tic-tac-toe-backend",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push"
   },

@@ -58,8 +58,6 @@ const gameHistory = new GameHistory(
   mongoose.connection.close();
 });*/
 
-
-
 GameHistory.find({})
   .then(result => {
     result.forEach(gameStat => console.log(gameStat));

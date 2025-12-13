@@ -3,7 +3,7 @@ const express = require("express");
 const morgan = require("morgan"); // logging network traffic
 const app = express();
 const GameHistory = require("./models/gameHistory");
-const { aggregateTotalStats } = require("./services/totalStats");
+const { aggregateTotalStats, defaultTotalStats } = require("./services/totalStats");
 
 app.use(express.json());
 app.use(morgan("tiny"));
@@ -30,7 +30,7 @@ app.get("/api/totalstats", (request, response) => {
     result
       .then(totalStats => {
         console.log("/api/totalstats aggregate: ", totalStats[0]);
-        response.json(totalStats[0] || { totalStats: {} });
+        response.json(totalStats[0] || defaultTotalStats);
       })
       .catch (error => {
         console.error("totalStats aggregation error:", error);

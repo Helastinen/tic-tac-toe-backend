@@ -1,5 +1,12 @@
 const GameHistory = require("../models/gameHistory");
 
+const defaultTotalStats = {
+  playerOneWins: 0,
+  playerTwoWins: 0,
+  ties: 0,
+  aborted: 0
+};
+
 const aggregateTotalStats = () => {
   return GameHistory.aggregate([
     {
@@ -55,4 +62,4 @@ const aggregateTotalStats = () => {
   ]);
 };
 
-module.exports = { aggregateTotalStats };
+module.exports = { defaultTotalStats, aggregateTotalStats };

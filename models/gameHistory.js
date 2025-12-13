@@ -2,7 +2,10 @@ const mongoose = require("mongoose");
 
 mongoose.set("strictQuery", false);
 
-const url = process.env.MONGODB_URI;
+const url = process.env.NODE_ENV === "test"
+  ? process.env.MONGODB_TEST_URI
+  : process.env.MONGODB_URI;
+
 const parsed = new URL(url);
 
 parsed.password = "*****";
@@ -11,7 +14,7 @@ parsed.password = "*****";
 console.log("connecting to", parsed.toString());
 
 mongoose.connect(url, { family: 4 })
-  .then(result => console.log("connected to MongoDB"))
+  .then(result => console.log(`connected to MongoDB ${process.env.NODE_ENV}`))
   .catch(error => console.log("error connecting to MongoDB: ", error.message));
 
 // GameHistory schema
