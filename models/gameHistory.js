@@ -14,7 +14,7 @@ parsed.password = "*****";
 console.log("connecting to", parsed.toString());
 
 mongoose.connect(url, { family: 4 })
-  .then(result => console.log(`connected to MongoDB ${process.env.NODE_ENV}`))
+  .then(result => console.log(`connected to MongoDB ${url}`))
   .catch(error => console.log("error connecting to MongoDB: ", error.message));
 
 // GameHistory schema

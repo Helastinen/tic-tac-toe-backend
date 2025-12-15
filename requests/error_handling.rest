@@ -1,0 +1,11 @@
+### ValidationError (missing required field "status")
+POST http://localhost:3001/api/gamehistory
+Content-Type: application/json
+
+{
+  "playerOne": "Alice",
+  "playerTwo": "Bob"
+}
+
+### Unknown endpoint (should return 404 unknown endpoint)
+GET http://localhost:3001/api/doesnotexist
