@@ -14,18 +14,17 @@ parsed.password = "*****";
 console.log("connecting to", parsed.toString());
 
 mongoose.connect(url, { family: 4 })
-  .then(result => console.log(`connected to MongoDB ${url}`))
+  .then(() => console.log(`connected to MongoDB ${url}`))
   .catch(error => console.log("error connecting to MongoDB: ", error.message));
 
 // GameHistory schema
 const gameHistorySchema = new mongoose.Schema({
-  // id: {type: Number, required: true},
-  playerOne: {type: String, required: true},
-  playerTwo: {type: String, required: true},
-  winnerName: {type: String, required: false},
-  winningMark: {type: String, required: false},
-  winningMove: {type: Number, required: false},
-  status: {type: String, required: true},
+  playerOne: { type: String, required: true, minLength: 3 },
+  playerTwo: { type: String, required: true, minLength: 3 },
+  winnerName: { type: String, required: false },
+  winningMark: { type: String, required: false },
+  winningMove: { type: Number, required: false },
+  status: { type: String, required: true },
 });
 
 // remove redundant ids from response

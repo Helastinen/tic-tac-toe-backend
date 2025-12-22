@@ -7,23 +7,23 @@ if (process.argv.length < 3) {
 
 const username = "hellstenantti_db_user";
 const password = process.argv[2];
-const dbName = "gamehistory";  
+const dbName = "gamehistory";
 const appName = "Cluster0";
 const url = `mongodb+srv://${username}:${password}@cluster0.xcbdbl1.mongodb.net/${dbName}?appName=${appName}`;
 
 mongoose.set("strictQuery", false);
 
 // connection uses IPv4
-mongoose.connect(url, { family: 4 })
+mongoose.connect(url, { family: 4 });
 
 const GameHistorySchema = new mongoose.Schema({
-  id: {type: Number, required: true},
-  playerOne: {type: String, required: true},
-  playerTwo: {type: String, required: true},
-  winnerName: {type: String, required: false},
-  winningMark: {type: String, required: false},
-  winningMove: {type: Number, required: false},
-  status: {type: String, required: true},
+  id: { type: Number, required: true },
+  playerOne: { type: String, required: true },
+  playerTwo: { type: String, required: true },
+  winnerName: { type: String, required: false },
+  winningMark: { type: String, required: false },
+  winningMove: { type: Number, required: false },
+  status: { type: String, required: true },
 });
 
 /*const TotalStatsSchema = new mongoose.Schema({
@@ -40,7 +40,7 @@ const gameStatsSchema = new mongoose.Schema({
 
 const GameHistory = mongoose.model("GameHistory", GameHistorySchema);
 
-const gameHistory = new GameHistory(
+/* const gameHistory =*/ new GameHistory(
   {
     "id": 1,
     "playerOne": "Alice",
@@ -52,7 +52,7 @@ const gameHistory = new GameHistory(
   }
 );
 
- /*gameHistory.save().then(result => {
+/*gameHistory.save().then(result => {
   console.log("gameHistory saved!");
   console.log("result: ", result);
   mongoose.connection.close();

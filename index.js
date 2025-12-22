@@ -1,16 +1,16 @@
 require("dotenv").config(); // import environment values from .env
 const express = require("express");
-const morgan = require("morgan"); 
+const morgan = require("morgan");
 const app = express();
 const GameHistory = require("./models/gameHistory");
 const { aggregateTotalStats, defaultTotalStats } = require("./services/totalStats");
 
 // Middleware
 const requestLogger = (request, response, next) => {
-  console.log('Method:', request.method);
-  console.log('Path:  ', request.path);
-  console.log('Body:  ', request.body);
-  console.log('---');
+  console.log("Method:", request.method);
+  console.log("Path:  ", request.path);
+  console.log("Body:  ", request.body);
+  console.log("---");
   next();
 };
 
@@ -37,7 +37,7 @@ app.get("/api/gamehistory", (request, response, next) => {
 
 app.get("/api/totalstats", (request, response, next) => {
   const result = aggregateTotalStats();
-  
+
   result
     .then(totalStats => {
       //console.log("/api/totalstats aggregate: ", totalStats[0]);
@@ -69,8 +69,8 @@ const unknownEndpoint = (request, response) => {
 };
 app.use(unknownEndpoint);
 
-const errorHandler = (error, request, response, next) => {
-  //console.log(error.message);
+const errorHandler = (error, request, response) => {
+  console.log(error.message);
 
   if (error.name === "ValidationError") {
     return response.status(400).json({ error: error.message });

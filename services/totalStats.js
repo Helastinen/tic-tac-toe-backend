@@ -15,7 +15,7 @@ const aggregateTotalStats = () => {
         playerOneWins: {
           $sum: {
             $cond: [
-              { $eq: ["$winnerName", "$playerOne" ]},
+              { $eq: ["$winnerName", "$playerOne" ] },
               1,
               0
             ]

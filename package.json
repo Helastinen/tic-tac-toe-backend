@@ -10,6 +10,7 @@
     "start": "node index.js",
     "dev": "node --watch index.js",
     "test": "NODE_ENV=test node --watch index.js",
+    "lint": "eslint .",
     "build:ui": "rm -rf dist && cd ../tic-tac-toe && npm run build && cp -r dist ../tic-tac-toe-backend",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push"
   },
@@ -19,5 +20,11 @@
     "mongodb": "^7.0.0",
     "mongoose": "^9.0.1",
     "morgan": "^1.10.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.2",
+    "@stylistic/eslint-plugin": "^5.6.1",
+    "eslint": "^9.39.2",
+    "globals": "^16.5.0"
   }
 }
