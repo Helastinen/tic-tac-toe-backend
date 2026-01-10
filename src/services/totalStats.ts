@@ -1,14 +1,15 @@
-const GameHistory = require("../models/gameHistory");
+import { GameHistoryModel } from "../models/gameHistory";
+import { TotalStats } from "../types/totalStats";
 
-const defaultTotalStats = {
+export const defaultTotalStats: TotalStats = {
   playerOneWins: 0,
   playerTwoWins: 0,
   ties: 0,
   aborted: 0
 };
 
-const aggregateTotalStats = () => {
-  return GameHistory.aggregate([
+export const aggregateTotalStats = async (): Promise<TotalStats[]> => {
+  return GameHistoryModel.aggregate<TotalStats>([
     {
       $group: {
         _id: null,
@@ -53,13 +54,11 @@ const aggregateTotalStats = () => {
     {
       $project: {
         _id: 0,
-        playerOneWins: "$playerOneWins",
-        playerTwoWins: "$playerTwoWins",
-        ties: "$ties",
-        aborted: "$aborted"
+        playerOneWins: 1,
+        playerTwoWins: 1,
+        ties: 1,
+        aborted: 1
       }
     }
   ]);
 };
-
-module.exports = { defaultTotalStats, aggregateTotalStats };

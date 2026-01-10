@@ -1,12 +1,16 @@
-require("dotenv").config(); // import environment values from .env
-const express = require("express");
-const morgan = require("morgan");
+import dotenv from "dotenv";
+dotenv.config(); // import environment values from .env
+import express, { Request, Response, NextFunction } from "express";
+import morgan from "morgan";
 const app = express();
-const GameHistory = require("./models/gameHistory");
-const { aggregateTotalStats, defaultTotalStats } = require("./services/totalStats");
+
+import { aggregateTotalStats, defaultTotalStats } from "./services/totalStats";
+import { GameHistoryModel } from "./models/gameHistory";
+import { GameHistory } from "./types/gameHistory";
+import { HydratedDocument } from "mongoose";
 
 // Middleware
-const requestLogger = (request, response, next) => {
+const requestLogger = (request: Request, response: Response, next: NextFunction) => {
   console.log("Method:", request.method);
   console.log("Path:  ", request.path);
   console.log("Body:  ", request.body);
@@ -20,22 +24,22 @@ app.use(requestLogger);
 app.use(morgan("tiny")); // logging network traffic
 
 // Routes
-app.get("/", (request, response) => {
+app.get("/", (request: Request, response: Response) => {
   response.send("<h1>Hello world</h1>");
 });
 
-app.get("/api/gamehistory", (request, response, next) => {
+app.get("/api/gamehistory", (request: Request, response: Response, next: NextFunction) => {
   //console.log("/api/gamehistory triggered!");
-  GameHistory
+  GameHistoryModel
     .find({})
     .then(gameHistory => {
       //console.log("gamehistory triggered!");
       response.json(gameHistory);
     })
-    .catch(error => next(error));
+    .catch((error: Error) => next(error));
 });
 
-app.get("/api/totalstats", (request, response, next) => {
+app.get("/api/totalstats", (request: Request, response: Response, next: NextFunction) => {
   const result = aggregateTotalStats();
 
   result
@@ -43,10 +47,10 @@ app.get("/api/totalstats", (request, response, next) => {
       //console.log("/api/totalstats aggregate: ", totalStats[0]);
       response.json(totalStats[0] || defaultTotalStats);
     })
-    .catch(error => next(error));
+    .catch((error: Error) => next(error));
 });
 
-app.post("/api/gamehistory", (request, response, next) => {
+app.post("/api/gamehistory", (request: Request<{}, {}, GameHistory>, response: Response, next: NextFunction) => {
   const gameResult = request.body;
   //console.log("request.body: ", gameResult);
 
@@ -54,22 +58,22 @@ app.post("/api/gamehistory", (request, response, next) => {
     return response.status(400).json({ error: "status missing" });
   }
 
-  const newGameHistory = new GameHistory(gameResult);
+  const newGameHistory = new GameHistoryModel(gameResult);
 
   newGameHistory
     .save()
-    .then(savedGameHistory => {
+    .then((savedGameHistory: HydratedDocument<GameHistory>) => {
       response.json(savedGameHistory);
     })
-    .catch(error => next(error));
+    .catch((error: Error) => next(error));
 });
 
-const unknownEndpoint = (request, response) => {
+const unknownEndpoint = (request: Request, response: Response) => {
   response.status(404).send({ error: "unknown endpoint" });
 };
 app.use(unknownEndpoint);
 
-const errorHandler = (error, request, response) => {
+const errorHandler = (error: Error, request: Request, response: Response, next: NextFunction) => {
   console.log(error.message);
 
   if (error.name === "ValidationError") {
@@ -81,7 +85,7 @@ const errorHandler = (error, request, response) => {
 
 app.use(errorHandler);
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT!;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
