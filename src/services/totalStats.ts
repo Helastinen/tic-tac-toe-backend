@@ -1,4 +1,4 @@
-import { GameHistoryModel } from "../models/gameHistory";
+import GameHistoryModel from "../models/gameHistory";
 import { TotalStats } from "../types/totalStats";
 
 export const defaultTotalStats: TotalStats = {
