@@ -2,10 +2,16 @@
 Backend service for the Tic‑Tac‑Toe application.
 © Antti Hellsten 2026.
 
+# Live Demo 
+The application is deployed on Render and available here:
+🔗 **https://tic-tac-toe-pin5.onrender.com/** 
+
+**Note:** On the free Render tier, the service may take up to 30 seconds to spin up if it has been idle.
+
 # Overview
 This backend provides the game logic, player state management, and API endpoints used by the Tic‑Tac‑Toe frontend. It is built with Node.js, TypeScript, and Express, and is designed to be lightweight, stateless, and easy to deploy.
 
-The backend also serves the production‑built frontend from the dist/ directory, making it possible to deploy the entire application as a single service.
+The backend also serves the production‑built frontend from the `dist/` directory, making it possible to deploy the entire application as a single service.
 
 # Features
 - REST API for game statistics
@@ -43,7 +49,7 @@ Run the server using ts-node:
 `npm run dev`
 
 ## 4. Build the backend (TypeScript → JavaScript)
-Compile the backend into the build/ directory:
+Compile the backend into the `build/` directory:
 `npm run build`
 
 ## 5. Start the production server
