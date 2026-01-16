@@ -12,7 +12,7 @@
     "dev": "ts-node src/index.ts",
     "test": "NODE_ENV=test ts-node src/index.ts",
     "lint": "eslint .",
-    "build:ui": "rm -rf dist && cd ../tic-tac-toe && npm run build && cp -r dist ../tic-tac-toe-backend",
+    "build:ui": "rm -rf dist && cd ../tic-tac-toe-frontend && npm run build && cp -r dist ../tic-tac-toe-backend",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push"
   },
   "dependencies": {
