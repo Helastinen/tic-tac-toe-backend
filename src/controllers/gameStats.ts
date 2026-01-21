@@ -12,7 +12,6 @@ gameStatsRouter.get("/", (request: Request, response: Response) => {
 });
 
 gameStatsRouter.get("/gamehistory", (request: Request, response: Response, next: NextFunction) => {
-  //console.log("/api/gamehistory triggered!");
   GameHistoryModel
     .find({})
     .then(gameHistory => response.json(gameHistory))
@@ -23,16 +22,12 @@ gameStatsRouter.get("/totalstats", (request: Request, response: Response, next: 
   const result = aggregateTotalStats();
 
   result
-    .then(totalStats => {
-      //console.log("/api/totalstats aggregate: ", totalStats[0]);
-      response.json(totalStats[0] || defaultTotalStats);
-    })
+    .then(totalStats => response.json(totalStats[0] || defaultTotalStats))
     .catch((error: Error) => next(error));
 });
 
 gameStatsRouter.post("/gamehistory", (request: Request<{}, {}, GameHistory>, response: Response, next: NextFunction) => {
   const gameResult = request.body;
-  //console.log("request.body: ", gameResult);
 
   if (!gameResult.status) {
     return response.status(400).json({ error: "status missing" });
