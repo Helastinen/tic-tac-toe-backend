@@ -7,5 +7,5 @@ Content-Type: application/json
   "winnerName": "Bob",
   "winningMark": "O",
   "winningMove": 7,
-  "status": "completed"
+  "status": "completed_with_winner"
 }

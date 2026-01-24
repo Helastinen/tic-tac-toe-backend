@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import logger from "./logger";
+import z, { ZodType } from "zod";
 
 export const requestLogger = (request: Request, response: Response, next: NextFunction) => {
   logger.info("Method:", request.method);
@@ -21,4 +22,20 @@ export const errorHandler = (error: Error, request: Request, response: Response,
   }
 
   return response.status(500).json({ error: error.message });
+};
+
+export const validate = (schema: ZodType) => {
+  return (request: Request, response: Response, next: NextFunction) => {
+    const result = schema.safeParse(request.body);
+
+    if (!result.success) {
+      return response.status(400).json({
+        error: "Invalid request data",
+        details: z.treeifyError(result.error)
+      });
+    }
+
+    request.body = result.data;
+    next();
+  }
 };

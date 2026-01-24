@@ -4,6 +4,8 @@ import { HydratedDocument } from "mongoose";
 import GameHistoryModel from "../models/gameHistory";
 import { GameHistory } from "../types/gameHistory";
 import { aggregateTotalStats, defaultTotalStats } from "../services/totalStats";
+import { validate } from "../utils/middleware";
+import { createGameHistorySchema } from "../validation/statsSchema";
 
 const gameStatsRouter = express.Router();
 
@@ -26,21 +28,19 @@ gameStatsRouter.get("/totalstats", (request: Request, response: Response, next: 
     .catch((error: Error) => next(error));
 });
 
-gameStatsRouter.post("/gamehistory", (request: Request<{}, {}, GameHistory>, response: Response, next: NextFunction) => {
-  const gameResult = request.body;
-
-  if (!gameResult.status) {
-    return response.status(400).json({ error: "status missing" });
+gameStatsRouter.post(
+  "/gamehistory",
+  validate(createGameHistorySchema),
+  (request: Request<{}, {}, GameHistory>, response: Response, next: NextFunction) => {
+    const newGameHistory = new GameHistoryModel(request.body);
+/^[\p{L}0-9_]+$/u
+    newGameHistory
+      .save()
+      .then((savedGameHistory: HydratedDocument<GameHistory>) => {
+        response.json(savedGameHistory);
+      })
+      .catch((error: Error) => next(error));
   }
-
-  const newGameHistory = new GameHistoryModel(gameResult);
-
-  newGameHistory
-    .save()
-    .then((savedGameHistory: HydratedDocument<GameHistory>) => {
-      response.json(savedGameHistory);
-    })
-    .catch((error: Error) => next(error));
-});
+);
 
 export default gameStatsRouter;

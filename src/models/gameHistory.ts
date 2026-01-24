@@ -1,14 +1,20 @@
 import mongoose from "mongoose";
 import { GameHistory } from "../types/gameHistory";
+import { allowedChars } from "../constants";
 
 // GameHistory schema
 const gameHistorySchema = new mongoose.Schema<GameHistory>({
-  playerOne: { type: String, required: true, minLength: 3 },
-  playerTwo: { type: String, required: true, minLength: 3 },
-  winnerName: { type: String, required: false },
-  winningMark: { type: String, required: false },
-  winningMove: { type: Number, required: false },
-  status: { type: String, required: true },
+  playerOne: { type: String, required: true, match: allowedChars, minLength: 3, maxLength: 20 },
+  playerTwo: { type: String, required: true, match: allowedChars, minLength: 3, maxLength: 20 },
+  winnerName: { type: String, required: false, match: allowedChars, minLength: 3, maxLength: 20 },
+  winningMark: { type: String, required: false, enum: ["X", "O"] },
+  // Game can not be won before turn 5
+  winningMove: { type: Number, required: false, min: 5, max: 9 },
+  status: { type: String, required: true, enum: [
+    "aborted",
+    "completed_with_winner",
+    "completed_with_tie"
+  ]},
 });
 
 // remove redundant ids from response

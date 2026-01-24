@@ -1,0 +1,1 @@
+export const allowedChars: RegExp = /^[\p{L}0-9_ \-]+$/u;
