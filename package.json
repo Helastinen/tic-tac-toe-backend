@@ -4,7 +4,7 @@
   "description": "backend for tic-tac-toe app",
   "license": "MIT",
   "author": "Antti Hellsten",
-  "type": "commonjs",
+  "type": "module",
   "main": "src/index.ts",
   "scripts": {
     "build": "tsc",

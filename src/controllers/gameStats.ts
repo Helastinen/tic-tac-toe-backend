@@ -1,11 +1,11 @@
 import express, { Request, Response, NextFunction } from "express";
 import { HydratedDocument } from "mongoose";
 
-import GameHistoryModel from "../models/gameHistory";
-import { GameHistory } from "../types/gameHistory";
-import { aggregateTotalStats, defaultTotalStats } from "../services/totalStats";
-import { validate } from "../utils/middleware";
-import { createGameHistorySchema } from "../validation/statsSchema";
+import GameHistoryModel from "../models/gameHistory.js";
+import { GameHistory } from "../types/gameHistory.js";
+import { aggregateTotalStats, defaultTotalStats } from "../services/totalStats.js";
+import { validate } from "../utils/middleware.js";
+import { createGameHistorySchema } from "../validation/statsSchema.js";
 
 const gameStatsRouter = express.Router();
 
