@@ -1,5 +1,5 @@
-import GameHistoryModel from "../models/gameHistory.js";
-import { TotalStats } from "../types/totalStats.js";
+import GameHistoryModel from "../models/gameHistory";
+import { TotalStats } from "../types/totalStats";
 
 export const defaultTotalStats: TotalStats = {
   playerOneWins: 0,

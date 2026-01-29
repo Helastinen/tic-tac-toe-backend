@@ -1,5 +1,5 @@
 import z from "zod";
-import { allowedChars } from "../constants.js";
+import { allowedChars } from "../constants";
 
 export const createGameHistorySchema = z.object({ 
   playerOne: z.string().trim().regex(allowedChars).min(3).max(20),

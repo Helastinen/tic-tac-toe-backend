@@ -1,10 +1,10 @@
 import express from "express";
 import mongoose from "mongoose";
-import logger from "./utils/logger.js";
-import { errorHandler, requestLogger, unknownEndpoint } from "./utils/middleware.js";
+import logger from "./utils/logger";
+import { errorHandler, requestLogger, unknownEndpoint } from "./utils/middleware";
 import morgan from "morgan";
-import gameStatsRouter from "./controllers/gameStats.js";
-import { MONGODB_URI, MONGODB_URI_TEST } from "./utils/config.js";
+import gameStatsRouter from "./controllers/gameStats";
+import { MONGODB_URI, MONGODB_URI_TEST } from "./utils/config";
 
 const app = express();
 

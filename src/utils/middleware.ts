@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import logger from "./logger.js";
+import logger from "./logger";
 import z, { ZodType } from "zod";
 
 export const requestLogger = (request: Request, response: Response, next: NextFunction) => {

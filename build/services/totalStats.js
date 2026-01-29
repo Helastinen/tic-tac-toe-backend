@@ -1,12 +1,18 @@
-import GameHistoryModel from "../models/gameHistory.js";
-export const defaultTotalStats = {
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.aggregateTotalStats = exports.defaultTotalStats = void 0;
+const gameHistory_1 = __importDefault(require("../models/gameHistory"));
+exports.defaultTotalStats = {
     playerOneWins: 0,
     playerTwoWins: 0,
     ties: 0,
     aborted: 0
 };
-export const aggregateTotalStats = async () => {
-    return GameHistoryModel.aggregate([
+const aggregateTotalStats = async () => {
+    return gameHistory_1.default.aggregate([
         {
             $group: {
                 _id: null,
@@ -59,3 +65,4 @@ export const aggregateTotalStats = async () => {
         }
     ]);
 };
+exports.aggregateTotalStats = aggregateTotalStats;

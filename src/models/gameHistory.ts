@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import { GameHistory } from "../types/gameHistory.js";
-import { allowedChars } from "../constants.js";
+import { GameHistory } from "../types/gameHistory";
+import { allowedChars } from "../constants";
 
 // GameHistory schema
 const gameHistorySchema = new mongoose.Schema<GameHistory>({
