@@ -10,9 +10,10 @@ const middleware_1 = require("./utils/middleware");
 const morgan_1 = __importDefault(require("morgan"));
 const gameStats_1 = __importDefault(require("./controllers/gameStats"));
 const config_1 = require("./utils/config");
+const helmet_1 = __importDefault(require("helmet"));
 const app = (0, express_1.default)();
 mongoose_1.default.set("strictQuery", false);
-// create URL
+// Create URL
 const url = process.env.NODE_ENV === "test"
     ? config_1.MONGODB_URI_TEST
     : config_1.MONGODB_URI;
@@ -21,12 +22,13 @@ if (!url) {
 }
 const parsed = new URL(url);
 parsed.password = "*****";
-// connect using IPv4
+// Connect using IPv4
 logger_1.default.info("connecting to ", parsed.toString());
 mongoose_1.default.connect(url, { family: 4 })
     .then(() => logger_1.default.info(`connected to MongoDB ${url}`))
     .catch((error) => logger_1.default.error("error connecting to MongoDB: ", error.message));
-// middleware
+// Middleware
+app.use((0, helmet_1.default)()); // Security headers
 app.use(express_1.default.static("dist")); // serve static content from "dist" folder, that has FE
 app.use(express_1.default.json()); // parses incoming requests with a JSON body
 app.use(middleware_1.requestLogger);
