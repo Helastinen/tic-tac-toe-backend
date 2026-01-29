@@ -6,6 +6,7 @@ import { GameHistory } from "../types/gameHistory";
 import { aggregateTotalStats, defaultTotalStats } from "../services/totalStats";
 import { validate } from "../utils/middleware";
 import { createGameHistorySchema } from "../validation/statsSchema";
+import { gameHistoryLimiter } from "../utils/rateLimiter";
 
 const gameStatsRouter = express.Router();
 
@@ -30,10 +31,11 @@ gameStatsRouter.get("/totalstats", (request: Request, response: Response, next: 
 
 gameStatsRouter.post(
   "/gamehistory",
+  gameHistoryLimiter,
   validate(createGameHistorySchema),
   (request: Request<{}, {}, GameHistory>, response: Response, next: NextFunction) => {
     const newGameHistory = new GameHistoryModel(request.body);
-/^[\p{L}0-9_]+$/u
+
     newGameHistory
       .save()
       .then((savedGameHistory: HydratedDocument<GameHistory>) => {
