@@ -25,12 +25,12 @@ parsed.password = "*****";
 logger.info("connecting to ", parsed.toString());
 
 mongoose.connect(url, { family: 4 })
-  .then(() => logger.info(`connected to MongoDB ${url}`))
+  .then(() => logger.info(`connected to MongoDB ${parsed}`))
   .catch((error: Error) => logger.error("error connecting to MongoDB: ", error.message));
 
-// Middleware
+/* === Middleware === */
 app.use(helmet()); // Security headers
-app.use(express.static("dist")); // serve static content from "dist" folder, that has FE
+app.use(express.static("dist")); // serve static content from "dist" folder, that has compiled frontend build
 app.use(express.json()); // parses incoming requests with a JSON body
 app.use(requestLogger);
 app.use(morgan("tiny")); // logging network traffic
