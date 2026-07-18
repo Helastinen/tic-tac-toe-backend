@@ -15,6 +15,8 @@ const gameHistorySchema = new mongoose.Schema<GameHistory>({
     "completed_with_winner",
     "completed_with_tie"
   ]},
+  isSinglePlayerGame: { type: Boolean, required: true},
+  computerWon: { type: Boolean, required: false},
 });
 
 // remove redundant ids from response

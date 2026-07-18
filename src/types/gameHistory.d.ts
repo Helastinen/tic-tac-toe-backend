@@ -5,6 +5,8 @@ export interface GameHistory {
   winningMark?: string;
   winningMove?: number;
   status: string;
+  isSinglePlayerGame: boolean;
+  computerWon?: boolean;
   // Mongoose-added fields
   _id: ObjectId;
   __v?: number;

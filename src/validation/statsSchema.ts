@@ -13,4 +13,6 @@ export const createGameHistorySchema = z.object({
     "completed_with_winner",
     "completed_with_tie"
   ]),
+  isSinglePlayerGame: z.boolean(),
+  computerWon: z.boolean().optional()
 }).strict();
