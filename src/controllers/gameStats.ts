@@ -25,7 +25,7 @@ gameStatsRouter.get("/totalstats", (request: Request, response: Response, next: 
   const result = aggregateTotalStats();
 
   result
-    .then(totalStats => response.json(totalStats[0] || defaultTotalStats))
+    .then(totalStats => response.json(totalStats || defaultTotalStats))
     .catch((error: Error) => next(error));
 });
 

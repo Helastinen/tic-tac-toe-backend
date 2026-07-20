@@ -1,11 +1,8 @@
 export interface AllGameStats {
   totalGames: number;
-  playerOneWins: number;
-  playerTwoWins: number;
-  computerWins: number;
+  wins: number;
   ties: number;
   aborted: number;
-  singlePlayerGames: number;
 }
 
 export interface SoloGameStats {

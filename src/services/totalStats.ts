@@ -4,12 +4,9 @@ import { TotalStats } from "../types/totalStats";
 export const defaultTotalStats: TotalStats = {
   allGames: {
     totalGames: 0,
-    playerOneWins: 0,
-    playerTwoWins: 0,
+    wins: 0,
     ties: 0,
-    aborted: 0,
-    singlePlayerGames: 0,
-    computerWins: 0
+    aborted: 0
   },
   soloGames: {
     totalSoloGames: 0,
@@ -47,28 +44,33 @@ export const aggregateTotalStats = async (): Promise<TotalStats> => {
   ]);
   console.log("aggregateTotalStats result", result);
 
-  return result[0];
+  const stats = result[0];
+
+  // safe return, if stats do not exist
+  return {
+    allGames: stats.allGames ?? defaultTotalStats.allGames,
+    soloGames: stats.soloGames ?? defaultTotalStats.soloGames,
+    twoPlayerGames: stats.twoPlayerGames ?? defaultTotalStats.twoPlayerGames,
+  }
 };
 
 //** Aggregation Pipelines */
+// Aggregates global stats across every game
 const allGamesPipeline = [
   {
     $group: {
       _id: null,
       totalGames: { $sum: 1 },
-      playerOneWins: {
+      wins: {
         $sum: {
           $cond: [
-            { $eq: ["$winnerName", "$playerOne" ] },
-            1,
-            0
-          ]
-        }
-      },
-      playerTwoWins: {
-        $sum: {
-          $cond: [
-            { $eq: ["$winnerName", "$playerTwo"] },
+            {
+              $or: [
+                { $eq: ["$winnerName", "$playerOne" ] },
+                { $eq: ["$winnerName", "$playerTwo"] },
+                { $eq: ["$computerWon", true] },
+              ]
+            },
             1,
             0
           ]
@@ -91,24 +93,6 @@ const allGamesPipeline = [
             0
           ]
         }
-      },
-      singlePlayerGames: {
-        $sum: {
-          $cond: [
-            { $eq: ["$isSinglePlayerGame", true] },
-            1,
-            0
-          ]
-        }
-      },
-      computerWins: {
-        $sum: {
-          $cond: [
-            { $eq: ["$computerWon", true] },
-            1,
-            0
-          ]
-        }
       }
     }
   },
@@ -117,13 +101,13 @@ const allGamesPipeline = [
   }
 ];
 
+// Aggregates stats for solo games only. human player always plays as playerOne
 const soloGamesPipeline = [
   { $match: {isSinglePlayerGame: true }},
   {
     $group: {
       _id: null,
       totalSoloGames: {$sum: 1 },
-      // human player always plays as playerOne
       humanWins: {
         $sum: {
           $cond: [
@@ -133,6 +117,15 @@ const soloGamesPipeline = [
           ]
         }
       },
+      computerWins: {
+        $sum: {
+          $cond: [
+            { $eq: ["$computerWon", true] },
+            1,
+            0
+          ]
+        }
+      },
       ties: {
         $sum: {
           $cond: [
@@ -146,15 +139,6 @@ const soloGamesPipeline = [
         $sum: {
           $cond: [
             { $eq: ["$status", "aborted"] },
-            1,
-            0
-          ]
-        }
-      },
-      computerWins: {
-        $sum: {
-          $cond: [
-            { $eq: ["$computerWon", true] },
             1,
             0
           ]
@@ -167,30 +151,13 @@ const soloGamesPipeline = [
   }
 ];
 
+// Aggregates stats for two‑player games only
 const twoPlayerPipeline = [
   { $match: {isSinglePlayerGame: false }},
   {
     $group: {
       _id: null,
       totalTwoPlayerGames: {$sum: 1 },
-      ties: {
-        $sum: {
-          $cond: [
-            { $eq: ["$status", "completed_with_tie"] },
-            1,
-            0
-          ]
-        }
-      },
-      aborted: {
-        $sum: {
-          $cond: [
-            { $eq: ["$status", "aborted"] },
-            1,
-            0
-          ]
-        }
-      },
       playerOneWins: {
         $sum: {
           $cond: [
@@ -204,6 +171,24 @@ const twoPlayerPipeline = [
         $sum: {
           $cond: [
             { $eq: ["$winnerName", "$playerTwo"] },
+            1,
+            0
+          ]
+        }
+      },
+      ties: {
+        $sum: {
+          $cond: [
+            { $eq: ["$status", "completed_with_tie"] },
+            1,
+            0
+          ]
+        }
+      },
+      aborted: {
+        $sum: {
+          $cond: [
+            { $eq: ["$status", "aborted"] },
             1,
             0
           ]
