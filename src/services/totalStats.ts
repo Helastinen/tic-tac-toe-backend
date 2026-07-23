@@ -97,16 +97,18 @@ const allGamesPipeline = [
           ]
         }
       },
-      averageGameLength: { 
-        $round: [
-          { $avg: "$winningMove" },
-          2
-        ]
-      }
+      averageGameLength: { $avg: "$gameLengthInMoves" }
     }
   },
   {
-    $project: { _id: 0 }
+    $project: {
+      _id: 0,
+      totalGames: 1,
+      wins: 1,
+      ties: 1,
+      aborted: 1,
+      averageGameLength: { $round: ["$averageGameLength", 2] }
+    }
   }
 ];
 
@@ -153,16 +155,19 @@ const soloGamesPipeline = [
           ]
         }
       },
-      averageGameLength: { 
-        $round: [
-          { $avg: "$winningMove" },
-          2
-        ]
-      }
+      averageGameLength: { $avg: "$gameLengthInMoves" }
     }
   },
   {
-    $project: { _id: 0 }
+    $project: {
+      _id: 0,
+      totalSoloGames: 1,
+      humanWins: 1,
+      computerWins: 1,
+      ties: 1,
+      aborted: 1,
+      averageGameLength: { $round: ["$averageGameLength", 2] }
+    }
   }
 ];
 
@@ -209,15 +214,18 @@ const twoPlayerPipeline = [
           ]
         }
       },
-      averageGameLength: { 
-        $round: [
-          { $avg: "$winningMove" },
-          2
-        ]
-      }
+      averageGameLength: { $avg: "$gameLengthInMoves" }
     }
   },
   {
-    $project: { _id: 0 }
+    $project: {
+      _id: 0,
+      totalTwoPlayerGames: 1,
+      playerOneWins: 1,
+      playerTwoWins: 1,
+      ties: 1,
+      aborted: 1,
+      averageGameLength: { $round: ["$averageGameLength", 2] }
+    }
   }
 ];

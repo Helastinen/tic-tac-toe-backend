@@ -9,7 +9,7 @@ const gameHistorySchema = new mongoose.Schema<GameHistory>({
   winnerName: { type: String, required: false, match: allowedChars, minLength: 3, maxLength: 20 },
   winningMark: { type: String, required: false, enum: ["X", "O"] },
   // Game can not be won before turn 5
-  winningMove: { type: Number, required: false, min: 5, max: 9 },
+  gameLengthInMoves: { type: Number, required: false, min: 5, max: 9 },
   status: { type: String, required: true, enum: [
     "aborted",
     "completed_with_winner",

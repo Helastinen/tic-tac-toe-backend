@@ -6,7 +6,7 @@ const gameStats = {
       "playerTwo": "Bob",
       "winnerName": "Bob",
       "winningMark": "O",
-      "winningMove": 5,
+      "gameLengthInMoves": 5,
       "status": "completed_with_winner",
       "singlePlayerGame": false
     },
@@ -39,7 +39,7 @@ const gameStats = {
       "playerTwo": "Computer",
       "winnerName": "Computer",
       "winningMark": "O",
-      "winningMove": 5,
+      "gameLengthInMoves": 5,
       "status": "completed_with_winner",
       "singlePlayerGame": true,
       "computerWon": true

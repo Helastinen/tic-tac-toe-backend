@@ -3,7 +3,7 @@ export interface GameHistory {
   playerTwo: string;
   winnerName?: string;
   winningMark?: string;
-  winningMove?: number;
+  gameLengthInMoves?: number;
   status: string;
   isSinglePlayerGame: boolean;
   computerWon?: boolean;

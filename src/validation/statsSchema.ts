@@ -7,7 +7,7 @@ export const createGameHistorySchema = z.object({
   winnerName: z.string().trim().regex(allowedChars).min(3).max(20).optional(),
   winningMark: z.enum(["X", "O"]).optional(),
    // Turn number. Game can not be won before turn 5
-  winningMove: z.number().int().min(5).max(9).optional(),
+  gameLengthInMoves: z.number().int().min(5).max(9).optional(),
   status: z.enum([
     "aborted",
     "completed_with_winner",

@@ -22,7 +22,7 @@ const GameHistorySchema = new mongoose.Schema({
   playerTwo: { type: String, required: true },
   winnerName: { type: String, required: false },
   winningMark: { type: String, required: false },
-  winningMove: { type: Number, required: false },
+  gameLengthInMoves: { type: Number, required: false },
   status: { type: String, required: true },
 });
 
@@ -47,7 +47,7 @@ const GameHistory = mongoose.model("GameHistory", GameHistorySchema);
     "playerTwo": "Bob",
     "winnerName": "Bob",
     "winningMark": "O",
-    "winningMove": 5,
+    "gameLengthInMoves": 5,
     "status": "completed_with_winner"
   }
 );

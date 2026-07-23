@@ -6,7 +6,7 @@ Content-Type: application/json
   "playerTwo": "Bob",
   "winnerName": "Bob",
   "winningMark": "O",
-  "winningMove": 7,
+  "gameLengthInMoves": 7,
   "status": "completed_with_winner",
   "isSinglePlayerGame": false
 }
