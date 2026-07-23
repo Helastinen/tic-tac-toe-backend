@@ -6,7 +6,8 @@ export const defaultTotalStats: TotalStats = {
     totalGames: 0,
     wins: 0,
     ties: 0,
-    aborted: 0
+    aborted: 0,
+    averageGameLength: 0
   },
   soloGames: {
     totalSoloGames: 0,
@@ -14,6 +15,7 @@ export const defaultTotalStats: TotalStats = {
     computerWins: 0,
     ties: 0,
     aborted: 0,
+    averageGameLength: 0
   },
   twoPlayerGames: {
     totalTwoPlayerGames: 0,
@@ -21,6 +23,7 @@ export const defaultTotalStats: TotalStats = {
     playerTwoWins: 0,
     ties: 0,
     aborted: 0,
+    averageGameLength: 0
   }
 };
 
@@ -93,6 +96,12 @@ const allGamesPipeline = [
             0
           ]
         }
+      },
+      averageGameLength: { 
+        $round: [
+          { $avg: "$winningMove" },
+          2
+        ]
       }
     }
   },
@@ -143,6 +152,12 @@ const soloGamesPipeline = [
             0
           ]
         }
+      },
+      averageGameLength: { 
+        $round: [
+          { $avg: "$winningMove" },
+          2
+        ]
       }
     }
   },
@@ -193,6 +208,12 @@ const twoPlayerPipeline = [
             0
           ]
         }
+      },
+      averageGameLength: { 
+        $round: [
+          { $avg: "$winningMove" },
+          2
+        ]
       }
     }
   },

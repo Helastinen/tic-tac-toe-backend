@@ -3,6 +3,7 @@ export interface AllGameStats {
   wins: number;
   ties: number;
   aborted: number;
+  averageGameLength: number;
 }
 
 export interface SoloGameStats {
@@ -11,6 +12,7 @@ export interface SoloGameStats {
   computerWins: number;
   ties: number;
   aborted: number;
+  averageGameLength: number;
 }
 
 export interface TwoPlayerGameStats {
@@ -19,6 +21,7 @@ export interface TwoPlayerGameStats {
   playerTwoWins: number;
   ties: number;
   aborted: number;
+  averageGameLength: number;
 }
 
 export interface TotalStats {
